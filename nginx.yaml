@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: tomcat
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: 8kmilesranjith/nginx:v1
+        stdin: true
+        tty: true
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /nginx-data
+          name: data
+        - mountPath: /etc/nginx/conf.d
+          name: config
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: nginx-config
+            items:
+            - key: nginx.conf
+              path: nginx.conf
