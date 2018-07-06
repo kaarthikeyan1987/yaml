@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: kaarthikdocker/nginx-app:latest
         stdin: true
         tty: true
         ports:
